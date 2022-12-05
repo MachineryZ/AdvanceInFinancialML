@@ -63,13 +63,13 @@ Bars
 
 PCA Weights
 1. 这个章节确实不知道在讲啥，先随便写一点把
-2. 这段代码
+2. 这段代码，输入时 cov，应该就是不同 instrument 的相关性矩阵，然后要返回 risk 的
 ~~~python
 def pcaWeights(cov, riskDict=None, riskTarget=1.):
     eVal, eVec = np.linalg.eigh(cov)
     indices = eVal.argsort()[::-1]
     eVal, eVec = eVal[indices], eVec[indices]
-    if riskDict is not None:
+    if riskDict is None:
         riskDict = np.zeros(cov.shape[0])
         riskDict[-1] = 1.
     loads = riskTarget * (riskDict / eVal) ** .5
@@ -77,4 +77,9 @@ def pcaWeights(cov, riskDict=None, riskTarget=1.):
     return wghts
 ~~~
 
+Sampling Features
+    1. Sampling for Reduction
+    2. Event-based Sampling
+    3. Cumsum Filters
+    4. 
 
