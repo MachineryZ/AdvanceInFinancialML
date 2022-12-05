@@ -33,11 +33,48 @@ Bars
     1. in this section we will explore how to use various indices of information arrival to samle bars
     2. 
 
+其他变种的 bars
 1. Tick Imbalance Bars
     1. 是一个用累计 tick 的变化率的在一段时间的绝对值总和的分割 bar 的模式
+    2. $\theta_t = \sum_{t=1}^T b_t$
 2. Volume/Dollars Imbalance Bars
+    1. 是在 tick imbalance bars 上进行了对 volume 的加权和
+    2. $\theta_t = \sum_{t=1}^T v_t b_t$
+    3. 同理， dollars imbalance bars 可以认为，把 $v_t$ 换成 $d_t$，则：$\theta_t = \sum_{t=1}^T d_t b_t$
 3. Tick Runs Bars
+    1. 对于上述的 tib，vib，dib 的合成 bar 的方法来说，large traders 会横扫整个 orderbook，为了更好的检测这种行为，monitor the sequence of buys in the overall volume, and take samples when that sequence diverges frmo our expectations 会比较好。
+    2. 定义为 $\theta_T = max\{\sum_{b_t=1, t}^Tb_t, -\sum_{b_t=-1}^Tb_t\}$，其实是 exponentially weighted moving average
 4. Volume/Dollar Runs Bars
-5. 
+    1. 同理，和 tick runs bars 一样，只是把 tick bars 变成 volume 或者 dollar 的 run bars
+    2. $\theta_T = max\{\sum_{b_t=1, t}^T v_t b_t, -\sum_{b_t=-1}^T v_t b_t\}$
+    3. $\theta_T = max\{\sum_{b_t=1, t}^T d_t b_t, -\sum_{b_t=-1}^T d_t b_t\}$
+    4. T∗ = arg minT{𝜃T ≥ E0[T]max{P[bt = 1]E0[vt|bt = 1],(1 − P[bt = 1])E0[vt|bt = −1]}}
+
+对于多产品系列的
+1. 对于 etf 的 trick：
+    1. 首先，应该考虑整个盘口的信息，而不是只看 bid-ask spread 这个单一信息
+    2. execution price 也应该被考虑进来
+2. 分析的基础数据有：
+    1. i-th instrument open price at bar t
+    2. i-th instrument close price at bar t
+    3. USD value of one point of i-th instrument at bar t
+    4. i-th instrument volume at bar t
+    5. dividend, coupon paid by i-th instrument at bar t
+
+PCA Weights
+1. 这个章节确实不知道在讲啥，先随便写一点把
+2. 这段代码
+~~~python
+def pcaWeights(cov, riskDict=None, riskTarget=1.):
+    eVal, eVec = np.linalg.eigh(cov)
+    indices = eVal.argsort()[::-1]
+    eVal, eVec = eVal[indices], eVec[indices]
+    if riskDict is not None:
+        riskDict = np.zeros(cov.shape[0])
+        riskDict[-1] = 1.
+    loads = riskTarget * (riskDict / eVal) ** .5
+    wghts = np.dot(eVec, np.reshape(loads, -1, 1))
+    return wghts
+~~~
 
 
