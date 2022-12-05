@@ -24,13 +24,17 @@ Bars
     4. Tick Bars problem: order for a size of 10, we buy 10 lots, our one order will be recorded as one tick; if instead on the offer there are 10 orders of size 1, our one buy will be recorded as 10 separate transactions. In addition, matching engine protocols can fuurther split one fill into multiple artificial partial fills, as a matter of operational convenience
 3. Volume Bars
     1. Volume bars circuumvent that problem by sampling every time a pre-defined amount of the security's units (shares, futuures contracts, etc.) have been exchanged.  For example, we could sample prices every time a futures contrace exchanges 1000 units, regardless of the number of ticks involved.
+    2. 也就是说，交易量到达一定的程度之后，形成一根 bar
 4. Dollar Bars
     1. Dollar bars are formed by sampling an observation every time a pre-defined market value is exchanged. 
-    2. Example: 
+    2. 说白了就是，当价格变动超过一定比例之后，会触发一根bar
+    3. 当价格变动非常剧烈的时候， dollar bars 的机制
 5. Information-driven bars:
     1. in this section we will explore how to use various indices of information arrival to samle bars
+    2. 
 
 1. Tick Imbalance Bars
+    1. 是一个用累计 tick 的变化率的在一段时间的绝对值总和的分割 bar 的模式
 2. Volume/Dollars Imbalance Bars
 3. Tick Runs Bars
 4. Volume/Dollar Runs Bars
